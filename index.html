@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kiwia — Kiếm tiền online</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#070b14; --panel:#111a2b; --panel2:#16223a; --line:#233350;
+  --text:#e8eef7; --muted:#8ea1c0;
+  --green:#22c55e; --lime:#a3e635; --red:#ef4444; --amber:#f59e0b;
+  --r:16px;
+}
+html,body{height:100%}
+body{
+  font-family:'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+  color:var(--text); min-height:100vh;
+  background:
+    radial-gradient(900px 500px at 10% -10%, rgba(34,197,94,.22), transparent 60%),
+    radial-gradient(800px 500px at 100% 0%, rgba(163,230,53,.12), transparent 55%),
+    #070b14;
+  -webkit-font-smoothing:antialiased;
+}
+code{font-family:ui-monospace,Consolas,monospace}
+
+/* ---------- Screens / pages ---------- */
+.screen{display:none;min-height:100vh}
+.screen.active{display:block}
+.page{display:none;animation:fade .25s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- Buttons ---------- */
+.btn{
+  border:none;border-radius:12px;padding:12px 20px;font-size:15px;font-weight:600;
+  cursor:pointer;font-family:inherit;transition:.18s;white-space:nowrap;
+}
+.btn.primary{background:linear-gradient(135deg,var(--green),var(--lime));color:#062012;box-shadow:0 8px 22px -8px rgba(34,197,94,.9)}
+.btn.primary:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn.danger{background:linear-gradient(135deg,#ef4444,#b91c1c);color:#fff}
+.btn.danger:hover{filter:brightness(1.1)}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.ghost:hover{background:var(--panel2)}
+.btn.small{padding:8px 14px;font-size:13px;border-radius:10px}
+.btn.full{width:100%}
+.btn.big{padding:16px 26px;font-size:17px;width:100%;margin-top:18px}
+.btn:disabled{opacity:.55;cursor:not-allowed;transform:none!important;filter:none!important}
+
+/* ---------- Inputs ---------- */
+input{
+  width:100%;padding:13px 15px;border-radius:12px;border:1px solid var(--line);
+  background:#0c1524;color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:.18s;
+}
+input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.15)}
+input::placeholder{color:#5b6b88}
+
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:7px;font-weight:600}
+
+.row{display:flex;gap:10px}
+.row input{flex:1}
+
+.msg{font-size:14px;margin-top:12px;min-height:20px;font-weight:600}
+.msg.error{color:#ff8080}
+.msg.success{color:#5ee38b}
+.hint{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:12px}
+
+/* ---------- Auth ---------- */
+.auth-wrap{max-width:430px;margin:0 auto;padding:60px 18px 40px}
+.brand-big{font-size:44px;font-weight:800;text-align:center;letter-spacing:-1px}
+.brand-sub{text-align:center;color:var(--muted);margin:8px 0 28px;font-size:14px}
+.auth-card{
+  background:linear-gradient(180deg,rgba(22,34,58,.95),rgba(17,26,43,.95));
+  border:1px solid var(--line);border-radius:22px;padding:26px;
+  box-shadow:0 30px 70px -30px rgba(0,0,0,.9);
+}
+.tabs{display:flex;background:#0c1524;border-radius:14px;padding:5px;margin-bottom:22px}
+.tab{
+  flex:1;padding:11px;border:none;background:transparent;color:var(--muted);
+  font-size:14px;font-weight:700;border-radius:10px;cursor:pointer;font-family:inherit;transition:.18s;
+}
+.tab.active{background:linear-gradient(135deg,var(--green),var(--lime));color:#062012}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ---------- Topbar ---------- */
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:16px 22px;border-bottom:1px solid var(--line);
+  background:rgba(7,11,20,.75);backdrop-filter:blur(12px);
+  position:sticky;top:0;z-index:50;
+}
+.logo-sm{font-size:20px;font-weight:800}
+.top-right{display:flex;align-items:center;gap:10px;min-width:0}
+.chip{
+  font-size:13px;color:var(--muted);background:var(--panel);border:1px solid var(--line);
+  padding:7px 13px;border-radius:999px;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.chip.admin{color:#062012;background:linear-gradient(135deg,var(--green),var(--lime));border:none;font-weight:700}
+
+/* ---------- Layout ---------- */
+.container{max-width:920px;margin:0 auto;padding:24px 18px 60px}
+
+/* ---------- Hero / menu ---------- */
+.hero-card{
+  background:linear-gradient(160deg,rgba(34,197,94,.14),rgba(17,26,43,.95) 45%);
+  border:1px solid var(--line);border-radius:22px;padding:26px;
+  box-shadow:0 30px 70px -40px rgba(34,197,94,.6);
+}
+.hero-greet{font-size:22px;font-weight:800;margin-bottom:8px;word-break:break-word}
+.uid-line{font-size:14px;color:var(--muted);margin-bottom:22px}
+.uid-line code{
+  background:#0c1524;border:1px solid var(--line);padding:5px 10px;border-radius:8px;
+  color:var(--lime);font-weight:700;letter-spacing:.5px;
+}
+.balance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.balance-item{
+  background:#0c1524;border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center;
+}
+.b-label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600}
+.b-val{display:block;font-size:20px;font-weight:800}
+.b-val.money{color:var(--lime)}
+
+/* ---------- Home ---------- */
+.back{margin-bottom:18px}
+.balance-bar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  background:linear-gradient(135deg,rgba(34,197,94,.16),rgba(17,26,43,.9));
+  border:1px solid var(--line);border-radius:16px;padding:16px 20px;margin-bottom:26px;
+}
+.balance-bar span{color:var(--muted);font-size:14px}
+.balance-bar strong{font-size:19px;color:var(--green)}
+.balance-bar .money{
+  margin-left:auto;font-size:19px;font-weight:800;color:var(--lime);
+  background:#0c1524;border:1px solid var(--line);padding:6px 14px;border-radius:10px;
+}
+.sec-title{font-size:18px;margin:26px 0 14px;display:flex;alig
